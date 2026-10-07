@@ -70,11 +70,18 @@ if __name__ == "__main__":
         for name, path in sorted(files.items()):
             output.write(path, name)
         # Include the entire matching engine source (tracked files and current edits).
-        paths = subprocess.check_output(["git", "-C", str(ROOT), "ls-files", "-z"]).decode().split("\0")
+        if (ROOT / ".git").exists():
+            paths = list(filter(None, subprocess.check_output(["git", "-C", str(ROOT), "ls-files", "-z"]).decode().split("\0")))
+            revision = subprocess.check_output(["git", "-C", str(ROOT), "rev-parse", "HEAD"]).decode().strip()
+        else:
+            paths = json.loads((ROOT / "PS5_SOURCE_FILES.json").read_text())
+            revision = (ROOT / "PS5_SOURCE_REVISION").read_text().strip()
         for name in filter(None, paths):
             path = ROOT / name
             if path.is_file():
                 output.write(path, "source/fheroes2/" + name)
+        output.writestr("source/fheroes2/PS5_SOURCE_FILES.json", json.dumps(paths, indent=2) + "\n")
+        output.writestr("source/fheroes2/PS5_SOURCE_REVISION", revision + "\n")
         for component in ("SDL", "sdk-source"):
             directory = CACHE / component
             paths = subprocess.check_output(["git", "-C", str(directory), "ls-files", "-z"]).decode().split("\0")

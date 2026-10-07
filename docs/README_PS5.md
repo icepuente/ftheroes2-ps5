@@ -42,6 +42,10 @@ The output is `build-ps5/fheroes2.elf`, `build-ps5/ps5-sdl-diagnostic.elf`, and
 import audit are under `build-ps5/logs/`. Source revisions are reproducible;
 byte-identical output across different LLVM/host package versions is not promised.
 
+The bundle also contains the matching engine source under `source/fheroes2` and
+dependency source/notices. Its revision/file manifests allow rebuilding and
+repackaging that source export without a `.git` directory.
+
 For an isolated diagnostic after bootstrapping:
 
 ```sh

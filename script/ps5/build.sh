@@ -50,8 +50,12 @@ cmake --build "$BUILD" --parallel "${JOBS:-6}" 2>&1 | tee "$BUILD/logs/build.log
 python3 "$ROOT/script/ps5/verify_elf.py" "$PS5_PAYLOAD_SDK" \
     "$BUILD/ps5-sdl-diagnostic.elf" "$BUILD/fheroes2.elf" 2>&1 | tee "$BUILD/logs/elf-audit.log"
 {
-    git -C "$ROOT" rev-parse HEAD
-    git -C "$ROOT" diff --stat
+    if [[ -e "$ROOT/.git" ]]; then
+        git -C "$ROOT" rev-parse HEAD
+        git -C "$ROOT" diff --stat
+    else
+        cat "$ROOT/PS5_SOURCE_REVISION"
+    fi
     "$LLVM_CONFIG" --version
     cmake --version
     sha256sum "$BUILD/ps5-sdl-diagnostic.elf" "$BUILD/fheroes2.elf"
