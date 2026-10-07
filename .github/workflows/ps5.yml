@@ -45,7 +45,7 @@ jobs:
       run: bash script/ps5/build.sh
     - name: Package engine-owned resources and source
       run: python3 script/ps5/package.py
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v6
       if: always()
       with:
         name: ps5-bringup
