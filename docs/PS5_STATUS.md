@@ -48,6 +48,10 @@ unnecessary target libraries. Host libraries are not used for the target.
 * Desktop demo startup: upstream download SHA-256 verified; an isolated SDL
   offscreen run reached `Main Menu` in text-support output. The timed smoke run
   was then terminated; it does not validate interactive gameplay or console exit.
+* Negative checks: an explicit host `SDL2_DIR` was rejected by the sysroot guard;
+  the ELF audit rejected the desktop executable's Linux SDL dependency.
+* Upstream format and copyright-header checks passed (clang-format 18), as did
+  ShellCheck, Python syntax checks, Markdown lint, and Git whitespace checks.
 * Hardware launch: **not tested**. The user reports firmware **13.60**, using
   **Relapse and a PS5 WebKit loader**, with file-transfer access and GOG game data.
   The exact loader version/ELF stage and a hardware run are still pending.

@@ -1,0 +1,2 @@
+# The PS5 workflow is executed by bash in Linux/WSL, including Windows checkouts.
+script/ps5/*.sh text eol=lf
