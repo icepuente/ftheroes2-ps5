@@ -24,7 +24,7 @@ jobs:
       LLVM_CONFIG: /usr/bin/llvm-config-18
       JOBS: 4
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - name: Install host tools
       run: |
         sudo apt-get update
