@@ -1,0 +1,29 @@
+{
+  "upstream_commit": "9754feff8501dbb69df95f3b999156a32eb8d7d3",
+  "pacbrew_commit": "dbb6998c90910f58d4f781fc2cab0ecb5ac202b4",
+  "sdk_commit": "d9c9519116944a7f1c22d262012c53b80b3520b7",
+  "sdk": {
+    "version": "0.43",
+    "url": "https://github.com/ps5-payload-dev/sdk/releases/download/v0.43/ps5-payload-sdk.zip",
+    "sha256": "a9cc9929f21b2b2c5d5b309f3bab4997067c45281c0622cf4838b1aecba66fcb"
+  },
+  "sdl": {
+    "commit": "ee4c47dc0d617b3bc8f35108f9956baf228a1322",
+    "url": "https://github.com/ps5-payload-dev/SDL.git"
+  },
+  "samplerate": {
+    "version": "0.2.2",
+    "url": "https://github.com/libsndfile/libsamplerate/releases/download/0.2.2/libsamplerate-0.2.2.tar.xz",
+    "sha256": "3258da280511d24b49d6b08615bbe824d0cacc9842b0e4caf11c52cf2b043893"
+  },
+  "zlib": {
+    "version": "1.3.2",
+    "url": "https://github.com/madler/zlib/releases/download/v1.3.2/zlib-1.3.2.tar.gz",
+    "sha256": "bb329a0a2cd0274d05519d61c667c062e06990d72e125ee2dfa8de64f0119d16"
+  },
+  "mixer": {
+    "version": "2.8.0",
+    "url": "https://github.com/libsdl-org/SDL_mixer/releases/download/release-2.8.0/SDL2_mixer-2.8.0.tar.gz",
+    "sha256": "1cfb34c87b26dbdbc7afd68c4f545c0116ab5f90bbfecc5aebe2a9cb4bb31549"
+  }
+}

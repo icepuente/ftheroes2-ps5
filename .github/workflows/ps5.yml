@@ -1,0 +1,55 @@
+name: PS5 payload build
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ps5-bringup, main]
+  pull_request:
+    paths:
+    - 'src/**'
+    - 'cmake/**'
+    - 'CMakeLists.txt'
+    - 'script/ps5/**'
+    - '.github/workflows/ps5.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      PS5_CACHE: ${{ github.workspace }}/.ps5-cache
+      LLVM_CONFIG: /usr/bin/llvm-config-18
+      JOBS: 4
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install host tools
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential cmake ninja-build pkg-config clang-18 lld-18 \
+          llvm-18-dev curl unzip gettext python3-pyelftools libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev zlib1g-dev
+    - name: Desktop build and headless SDL diagnostic
+      run: |
+        cmake -S . -B build-desktop -G Ninja -DCMAKE_BUILD_TYPE=Release -DENABLE_IMAGE=ON -DENABLE_PS5_DIAGNOSTIC=ON
+        cmake --build build-desktop --parallel "$JOBS"
+        cd build-desktop
+        SDL_VIDEODRIVER=dummy SDL_AUDIODRIVER=dummy ./ps5-sdl-diagnostic --frames 10
+    - name: Bootstrap pinned target dependencies
+      run: |
+        mkdir -p build-ps5/logs
+        set -o pipefail
+        python3 script/ps5/bootstrap.py 2>&1 | tee build-ps5/logs/bootstrap.log
+    - name: Cross-build and audit
+      run: bash script/ps5/build.sh
+    - name: Package engine-owned resources and source
+      run: python3 script/ps5/package.py
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: ps5-bringup
+        path: |
+          dist-ps5/*
+          build-ps5/logs/*
+        if-no-files-found: error

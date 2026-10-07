@@ -1,5 +1,9 @@
 # fheroes2
 
+This branch adds an **experimental native PS5 ELF port**. Start with the
+[PS5 build, setup and controls guide](docs/README_PS5.md) and
+[validation status](docs/PS5_STATUS.md). Hardware launch and playability are not yet verified.
+
 **fheroes2** is a recreation of the Heroes of Might and Magic II game engine.
 
 This open source multiplatform project, written from scratch, is designed to reproduce the original game with significant

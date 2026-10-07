@@ -1023,8 +1023,21 @@ namespace EventProcessing
                 buttonType = LocalEvent::ControllerButtonType::CONTROLLER_BUTTON_BACK;
                 break;
             case SDL_CONTROLLER_BUTTON_START:
+#if defined( TARGET_PS5 )
+                // SDL's PS5 backend maps Options to START. Keep the system menu accessible.
+                buttonType = LocalEvent::ControllerButtonType::CONTROLLER_BUTTON_BACK;
+#else
+                buttonType = LocalEvent::ControllerButtonType::CONTROLLER_BUTTON_START;
+#endif
+                break;
+#if defined( TARGET_PS5 )
+            case SDL_CONTROLLER_BUTTON_TOUCHPAD:
                 buttonType = LocalEvent::ControllerButtonType::CONTROLLER_BUTTON_START;
                 break;
+            case SDL_CONTROLLER_BUTTON_RIGHTSTICK:
+                buttonType = LocalEvent::ControllerButtonType::CONTROLLER_BUTTON_GUIDE;
+                break;
+#endif
             case SDL_CONTROLLER_BUTTON_GUIDE:
                 buttonType = LocalEvent::ControllerButtonType::CONTROLLER_BUTTON_GUIDE;
                 break;

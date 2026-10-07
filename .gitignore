@@ -110,3 +110,12 @@ fheroes2.data
 fheroes2.js
 fheroes2.wasm
 fheroes2.wasm.map
+# PS5 SDK, dependencies, diagnostics and local game data (never distribute assets).
+/.ps5-cache/
+/build-ps5/
+/build-desktop/
+/dist-ps5/
+/fheroes2.elf
+/fheroes2
+/ps5-game-data/
+/script/ps5/__pycache__/

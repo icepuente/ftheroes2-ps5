@@ -1,6 +1,6 @@
 /***************************************************************************
  *   fheroes2: https://github.com/ihhub/fheroes2                           *
- *   Copyright (C) 2021 - 2025                                             *
+ *   Copyright (C) 2021 - 2026                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -66,7 +66,7 @@ enum
     DBG_ALL_TRACE = DBG_ENGINE_TRACE | DBG_GAME_TRACE | DBG_BATTLE_TRACE | DBG_AI_TRACE | DBG_NETWORK_TRACE | DBG_OTHER_TRACE
 };
 
-#if defined( TARGET_NINTENDO_SWITCH ) || defined( _WIN32 )
+#if defined( TARGET_NINTENDO_SWITCH ) || defined( _WIN32 ) || defined( TARGET_PS5 )
 #include <fstream>
 #include <mutex>
 
@@ -94,7 +94,7 @@ namespace Logging
     bool isTextSupportModeEnabled();
 }
 
-#if defined( _WIN32 ) && defined( WITH_DEBUG )
+#if ( defined( _WIN32 ) && defined( WITH_DEBUG ) ) || defined( TARGET_PS5 )
 #define COUT( x )                                                                                                                                                        \
     {                                                                                                                                                                    \
         const std::scoped_lock<std::mutex> _logfile_lock( Logging::logMutex ); /* The name was chosen on purpose to avoid name collisions with outer code blocks. */     \

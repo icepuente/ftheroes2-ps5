@@ -1,6 +1,6 @@
 ###########################################################################
 #   fheroes2: https://github.com/ihhub/fheroes2                           #
-#   Copyright (C) 2022 - 2025                                             #
+#   Copyright (C) 2022 - 2026                                             #
 #                                                                         #
 #   This program is free software; you can redistribute it and/or modify  #
 #   it under the terms of the GNU General Public License as published by  #
@@ -38,6 +38,12 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 #
 option(ENABLE_IMAGE "Enable the use of SDL_image (requires libpng)" OFF)
 option(ENABLE_TOOLS "Enable the build of additional tools" OFF)
+option(ENABLE_PS5_DIAGNOSTIC "Build the standalone SDL hardware diagnostic" ${PS5})
+
+if(PS5)
+	add_compile_definitions(TARGET_PS5)
+	set(FHEROES2_DATA /data/fheroes2 CACHE STRING "PS5 game directory")
+endif()
 
 # Available only on macOS
 cmake_dependent_option(MACOS_APP_BUNDLE "Create a Mac app bundle" OFF "APPLE" OFF)
@@ -56,8 +62,19 @@ set_property(CACHE USE_SDL_VERSION PROPERTY STRINGS SDL2)
 #
 find_package(${USE_SDL_VERSION} REQUIRED)
 find_package(${USE_SDL_VERSION}_mixer REQUIRED)
-find_package(ZLIB REQUIRED)
+if(PS5)
+	find_package(ZLIB CONFIG REQUIRED COMPONENTS static)
+	add_library(ZLIB::ZLIB ALIAS ZLIB::ZLIBSTATIC)
+else()
+	find_package(ZLIB REQUIRED)
+endif()
 find_package(Threads)
+
+if(PS5)
+	# The SDK toolchain roots all package/include/library searches in its target
+	# sysroot. A host SDL or zlib must never satisfy these dependencies.
+	include(cmake/PS5Dependencies.cmake)
+endif()
 
 if(ENABLE_IMAGE)
 	find_package(${USE_SDL_VERSION}_image REQUIRED)
@@ -70,6 +87,10 @@ endif(ENABLE_IMAGE)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 add_subdirectory(src)
+
+if(ENABLE_PS5_DIAGNOSTIC)
+	add_subdirectory(src/platform/ps5)
+endif()
 
 #
 # Translation files

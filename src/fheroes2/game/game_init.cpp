@@ -192,6 +192,10 @@ namespace Game
         Logging::InitLog();
 
         COUT( appCaption )
+#if defined( TARGET_PS5 )
+        COUT( "PS5: data/config/logs: /data/fheroes2; saves: /data/fheroes2/files/save" )
+        COUT( "PS5: copy original DATA/HEROES2.AGG and MAPS into /data/fheroes2; install the port's files/data/resurrection.h2d too." )
+#endif
     }
 
     void initDataDir()

@@ -582,7 +582,11 @@ namespace
 
         static RenderCursor * create()
         {
-            return new RenderCursor;
+            auto * cursor = new RenderCursor;
+#if defined( TARGET_PS5 )
+            cursor->forceSoftwareEmulation();
+#endif
+            return cursor;
         }
 
     private:
@@ -1233,7 +1237,11 @@ namespace
             _driverIndex = -1;
 
             if ( const int driverCount = SDL_GetNumRenderDrivers(); driverCount >= 0 ) {
+#if defined( TARGET_PS5 )
+                const uint32_t requiredFlags = SDL_RENDERER_SOFTWARE;
+#else
                 const uint32_t requiredFlags = SDL_RENDERER_ACCELERATED;
+#endif
 
                 for ( int driverId = 0; driverId < driverCount; ++driverId ) {
                     const int returnCode = SDL_GetRenderDriverInfo( driverId, &rendererInfo );
@@ -1282,7 +1290,12 @@ namespace
 
             _createPalette();
 
+#if defined( TARGET_PS5 )
+            // Present the existing palette-converted surface through SDL's PS5 framebuffer.
+            _renderer = SDL_CreateRenderer( _window, _driverIndex, SDL_RENDERER_SOFTWARE );
+#else
             _renderer = SDL_CreateRenderer( _window, _driverIndex, SDL_RENDERER_ACCELERATED );
+#endif
             if ( _renderer == nullptr ) {
                 ERROR_LOG( "Failed to create a window renderer of " << resolutionInfo.gameWidth << " x " << resolutionInfo.gameHeight
                                                                     << " size. The error: " << SDL_GetError() )

@@ -82,6 +82,8 @@ namespace
         return System::concatPath( "ux0:data", appName );
 #elif defined( TARGET_NINTENDO_SWITCH )
         return System::concatPath( "/switch", appName );
+#elif defined( TARGET_PS5 )
+        return System::concatPath( "/data", appName );
 #elif defined( ANDROID )
         (void)appName;
 
@@ -278,7 +280,7 @@ bool System::isTouchInputAvailable()
 
 bool System::isVirtualKeyboardSupported()
 {
-#if defined( ANDROID ) || defined( TARGET_PS_VITA ) || defined( TARGET_NINTENDO_SWITCH ) || defined( __IPHONEOS__ )
+#if defined( ANDROID ) || defined( TARGET_PS_VITA ) || defined( TARGET_NINTENDO_SWITCH ) || defined( TARGET_PS5 ) || defined( __IPHONEOS__ )
     return true;
 #else
     return false;

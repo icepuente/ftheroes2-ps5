@@ -69,7 +69,7 @@ int main( int argc, char ** argv )
 
         Game::initLogging();
         Game::initDataDir();
-        Game::initConfigDir( argv[0] );
+        Game::initConfigDir( ( argv != nullptr && argv[0] != nullptr ) ? argv[0] : "" );
 
         auto coreComponent = Game::createCoreComponent();
         auto displayComponent = Game::createDisplayComponent();

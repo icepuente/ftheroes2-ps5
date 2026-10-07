@@ -120,6 +120,11 @@ Settings::Settings()
 
     _editorOptions.SetModes( EDITOR_ANIMATION );
 
+#if defined( TARGET_PS5 )
+    // Start with a readable 640x480 game area, scaled with its aspect ratio preserved.
+    _gameOptions.SetModes( GAME_FULLSCREEN | GAME_CURSOR_SOFT_EMULATION );
+#endif
+
     if ( System::isHandheldDevice() ) {
         // Due to the nature of handheld devices having small screens in general it is good to make fullscreen option by default.
         _gameOptions.SetModes( GAME_FULLSCREEN );
